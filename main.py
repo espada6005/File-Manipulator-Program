@@ -3,12 +3,12 @@ import sys
 
 class Manipulate:
 
-    commands = ["reserve", "copy", "duplicate-contents", "replace-stirng"]
+    commands = ["reserve", "copy", "duplicate-contents", "replace-string"]
 
     @staticmethod
     def manipulate(arguments):
         if not Manipulate.validate(arguments):
-            return "Wrong arguments...!!"
+            return "引数が無効です"
         else:
             return Manipulate.execute(arguments)
 
