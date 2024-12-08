@@ -6,17 +6,57 @@ class Manipulate:
     commands = ["reserve", "copy", "duplicate-contents", "replace-stirng"]
 
     @staticmethod
+    def manipulate(arguments):
+        if not Manipulate.validate(arguments):
+            return "Wrong arguments...!!"
+        else:
+            return Manipulate.execute(arguments)
+
+    #validate
+    @staticmethod
+    def validate(arguments):
+        if not Manipulate.is_valid_length(arguments):
+            return False
+        
+        command = arguments[1]
+        if not Manipulate.is_valid_command(command):
+            return False
+        
+        if command == Manipulate.commands[0]:
+            return Manipulate.is_valid_args_of_reserve(arguments)
+        elif command == Manipulate.commands[1]:
+            return Manipulate.is_valid_args_of_copy(arguments)
+        elif command == Manipulate.commands[2]:
+            return Manipulate.is_valid_args_of_duplicate(arguments)
+        elif command == Manipulate.commands[3]:
+            return Manipulate.is_valid_args_of_replace(arguments)
+        else:
+            return False
+
+    @staticmethod
     def is_valid_length(arguments):
         length = len(arguments)
         return length == 4 or length == 5
     
     @staticmethod
-    def is_valid_Command(command):
+    def is_valid_command(command):
         return command in Manipulate.commands
 
     @staticmethod
     def is_valid_args_of_reserve(arguments):
-        return ManipulateHelper.file_exits(arguments[2])
+        return ManipulateHelper.file_exits(arguments[2]) and Manipulate.overwrite_confirm(arguments[3])
+    
+    @staticmethod
+    def is_valid_args_of_copy(arguments):
+        return ManipulateHelper.file_exits(arguments[2]) and Manipulate.overwrite_confirm(arguments[3])
+    
+    @staticmethod
+    def is_valid_args_of_duplicate(arguments):
+        return ManipulateHelper.file_exits(arguments[2]) and arguments[3].isnumeric() and int(arguments[3]) >= 0
+    
+    @staticmethod
+    def is_valid_args_of_replace(arguments):
+        return ManipulateHelper.file_exits(arguments[2]) and Manipulate.overwrite_confirm(arguments[4])
     
     @staticmethod
     def overwrite_confirm(path):
@@ -30,7 +70,89 @@ class Manipulate:
         
         return bool(allow_overwriting)
 
+    # Execute
+    def execute(arguments):
+        command = arguments[1]
+        if command == Manipulate.commands[0]:
+            return Manipulate.reverse(arguments[2], arguments[3])
+        elif command == Manipulate.commands[1]:
+            return Manipulate.copy(arguments[2], arguments[3])
+        elif command == Manipulate.commands[2]:
+            count = int(arguments[3])
+            return Manipulate.duplicate(arguments[2], count)
+        elif command == Manipulate.commands[3]:
+            return Manipulate.replace(arguments[2], arguments[3], arguments[4])
+        else:
+            return "Sorry, Something went wrong..."
 
+    @staticmethod
+    def reverse(inputPath, outputPath):
+        print("ファイル読み込み")        
+        with open(inputPath) as f:
+            contents = f.read()
+        print("読み込み完了")
+    
+        contents = contents[::-1]
+
+        print("ファイル書き込み")
+        with open(outputPath, 'w') as f:
+            f.write(contents)
+        print("書き込み完了")
+
+        return "処理完了"
+    
+    @staticmethod
+    def copy(inputPath, outputPath):
+        print("Read file...")        
+        with open(inputPath) as f:
+            contents = f.read()
+        print("Finshed reading file!!")
+    
+        print("Write file...")
+        with open(outputPath, 'w') as f:
+            f.write(contents)
+        print("Finshed writing file!!")
+
+        return "DONE!!!!"
+    
+    @staticmethod
+    def duplicate(inputPath, n):
+        if n == 0:
+            return "Didn't duplicate..."
+        
+        print("Read file...")
+        with open(inputPath) as f:
+            contents = f.read()
+        print("Finshed reading file!!")
+
+        print("duplicate string...")
+        with open(inputPath, 'a') as f:
+            while n > 0:
+                f.write(contents)
+                n -= 1
+        print("Finshed Duplicating string!!")
+        
+        return "DONE!!!!"
+
+    
+    @staticmethod
+    def replace(inputPath, needle, newstring):
+        print("Read file...")
+        with open(inputPath) as f:
+            contents = f.read()
+        print("Finshed reading file!!")
+
+        contents = contents.replace(needle, newstring)
+
+        print("Write file...")
+        with open(inputPath, 'wt') as f:
+            f.write(contents)
+        print("Finshed writing file!!")
+
+        return "DONE!!!!"
+
+
+# Helper
 class ManipulateHelper:
 
     @staticmethod
@@ -47,3 +169,5 @@ class ManipulateHelper:
         else:
             return -1
         
+if __name__ == "__main__":
+    print(Manipulate.manipulate(sys.argv))
