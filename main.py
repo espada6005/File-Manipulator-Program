@@ -83,7 +83,7 @@ class Manipulate:
         elif command == Manipulate.commands[3]:
             return Manipulate.replace(arguments[2], arguments[3], arguments[4])
         else:
-            return "Sorry, Something went wrong..."
+            return "問題が発生しました"
 
     @staticmethod
     def reverse(inputPath, outputPath):
@@ -103,53 +103,53 @@ class Manipulate:
     
     @staticmethod
     def copy(inputPath, outputPath):
-        print("Read file...")        
+        print("ファイル読み込み")        
         with open(inputPath) as f:
             contents = f.read()
-        print("Finshed reading file!!")
+        print("読み込み完了")
     
-        print("Write file...")
+        print("ファイル書き込み")
         with open(outputPath, 'w') as f:
             f.write(contents)
-        print("Finshed writing file!!")
+        print("書き込み完了")
 
-        return "DONE!!!!"
+        return "処理完了"
     
     @staticmethod
     def duplicate(inputPath, n):
         if n == 0:
-            return "Didn't duplicate..."
+            return "複製失敗"
         
-        print("Read file...")
+        print("ファイル読み込み")
         with open(inputPath) as f:
             contents = f.read()
-        print("Finshed reading file!!")
+        print("読み込み完了")
 
-        print("duplicate string...")
+        print("複製開始")
         with open(inputPath, 'a') as f:
             while n > 0:
                 f.write(contents)
                 n -= 1
-        print("Finshed Duplicating string!!")
+        print("複製完了")
         
-        return "DONE!!!!"
+        return "処理完了"
 
     
     @staticmethod
     def replace(inputPath, needle, newstring):
-        print("Read file...")
+        print("ファイル読み込み")
         with open(inputPath) as f:
             contents = f.read()
-        print("Finshed reading file!!")
+        print("読み込み完了")
 
         contents = contents.replace(needle, newstring)
 
-        print("Write file...")
+        print("ファイル書き込み")
         with open(inputPath, 'wt') as f:
             f.write(contents)
-        print("Finshed writing file!!")
+        print("書き込み完了")
 
-        return "DONE!!!!"
+        return "処理完了"
 
 
 # Helper
