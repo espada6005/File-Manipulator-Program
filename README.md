@@ -1,10 +1,10 @@
 # File-Manipulator-Program
 
-### 概要
+## 概要
 
 テキストファイルの内容を反転・コピー・複製・文字の置き換えした新しいファイルを作成するプログラムです
 
-### 操作方法
+## 操作方法
 
 -  reverse：inputpath にあるファイルを受け取り、outputputh に inputpath の内容を逆にした新しいファイルを作成します
 
